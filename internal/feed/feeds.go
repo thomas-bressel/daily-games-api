@@ -16,7 +16,7 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "amstrad-eu", Name: "Amstrad.eu", URL: "https://amstrad.eu/feed/", Category: "amstrad-cpc", Description: "Amstrad community and news", IsActive: true},
 	{ID: "octoate", Name: "Octoate.de", URL: "https://www.octoate.de/feed/", Category: "amstrad-cpc", Description: "Amstrad CPC tricks and news", IsActive: true},
 	{ID: "atariage", Name: "Atariage", URL: "https://www.atariage.com/news/rss.php", Category: "atari-st", Description: "Atari ST news", IsActive: true},
-	{ID: "itchio", Name: "Itch.io", URL: "https://itch.io/feed/new.xml", Category: "homebrew", Description: "Homebrew games", IsActive: true},
+	{ID: "itchio", Name: "Itch.io", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC64fwl47Wrc6VJcskll7vsA", Category: "homebrew", Description: "Itch.io YouTube channel", IsActive: true},
 	{ID: "retro-rgb", Name: "Retro RGB", URL: "https://www.retrorgb.com/feed", Category: "homebrew", Description: "Retro RGB news", IsActive: true},
 	{ID: "indiedb", Name: "Indie DB", URL: "https://rss.indiedb.com/articles/feed/rss.xml", Category: "homebrew", Description: "Indie game news", IsActive: true},
 	{ID: "gameradar", Name: "Game Radar", URL: "https://www.gamesradar.com/feeds.xml", Category: "retrogaming", Description: "Game Radar news", IsActive: true},

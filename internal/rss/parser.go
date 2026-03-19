@@ -23,13 +23,43 @@ type Parser struct {
 //
 // timeoutSeconds is the maximum duration for a single RSS feed HTTP request.
 // maxItems is the maximum number of articles extracted per feed.
+// userAgent mimics a real browser to bypass Cloudflare bot protection on some feeds.
+const userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+// New creates a new RSS Parser with a configured HTTP client and item limit.
+//
+// timeoutSeconds is the maximum duration for a single RSS feed HTTP request.
+// maxItems is the maximum number of articles extracted per feed.
 func New(timeoutSeconds, maxItems int) *Parser {
 	return &Parser{
 		httpClient: &http.Client{
 			Timeout: time.Duration(timeoutSeconds) * time.Second,
+			Transport: &userAgentTransport{
+				wrapped:   http.DefaultTransport,
+				userAgent: userAgent,
+			},
 		},
 		maxItems: maxItems,
 	}
+}
+
+// userAgentTransport is an http.RoundTripper that injects a custom User-Agent header
+// on every outgoing request, overriding the default Go HTTP client agent.
+type userAgentTransport struct {
+	wrapped   http.RoundTripper
+	userAgent string
+}
+
+// RoundTrip executes the HTTP request after injecting browser-like headers
+// to reduce the chance of being blocked by Cloudflare or similar protections.
+func (t *userAgentTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req = req.Clone(req.Context())
+	req.Header.Set("User-Agent", t.userAgent)
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7")
+	req.Header.Set("Referer", "https://www.google.com/")
+	req.Header.Set("Cache-Control", "no-cache")
+	return t.wrapped.RoundTrip(req)
 }
 
 // ParseFeed fetches and parses a single RSS feed, returning a slice of Articles.
@@ -43,10 +73,7 @@ func (p *Parser) ParseFeed(ctx context.Context, feed pkg.Feed) ([]pkg.Article, e
 		return nil, fmt.Errorf("failed to parse feed %s: %w", feed.ID, err)
 	}
 
-	limit := p.maxItems
-	if len(parsed.Items) < limit {
-		limit = len(parsed.Items)
-	}
+	limit := min(p.maxItems, len(parsed.Items))
 
 	articles := make([]pkg.Article, 0, limit)
 	for _, item := range parsed.Items[:limit] {

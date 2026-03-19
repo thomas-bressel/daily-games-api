@@ -101,7 +101,7 @@ func ExtractTags(title, description string) []string {
 
 	combined := strings.ToLower(title + " " + description)
 	seen := make(map[string]bool)
-	var tags []string
+	tags := make([]string, 0) // never nil — serialises as [] not null in JSON
 
 	for _, kw := range keywords {
 		if strings.Contains(combined, kw) && !seen[kw] {
