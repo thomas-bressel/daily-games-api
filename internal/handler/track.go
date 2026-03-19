@@ -23,7 +23,7 @@ func NewTrackHandler(cache *cache.Client) *TrackHandler {
 // Event must be "share" or "bookmark" — any other value returns 400.
 func (h *TrackHandler) PostTrack(w http.ResponseWriter, r *http.Request) {
 	var body pkg.TrackEvent
-	if err := pkg.ParseJSON(r, &body); err != nil {
+	if err := pkg.ParseJSON(w, r, &body); err != nil {
 		pkg.WriteError(w, http.StatusBadRequest, "invalid request body")
 		return
 	}
