@@ -1,13 +1,14 @@
-package pkg
+package router
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"github.com/tbressel/daily-games-api/internal/handler"
+	"github.com/tbressel/daily-games-api/pkg"
 )
 
-// CreateRouter builds and returns the main HTTP handler with all routes
+// Create builds and returns the main HTTP handler with all routes
 // and middlewares applied.
 //
 // Routes:
@@ -16,7 +17,7 @@ import (
 //	GET /api/articles    - paginated article feed with optional filters
 //	GET /api/feeds       - list of active RSS feed sources
 //	GET /metrics         - total request count since server start
-func CreateRouter(articlesHandler *handler.ArticlesHandler) http.Handler {
+func Create(articlesHandler *handler.ArticlesHandler) http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /health", handler.GetHealth)
@@ -25,14 +26,14 @@ func CreateRouter(articlesHandler *handler.ArticlesHandler) http.Handler {
 	mux.HandleFunc("GET /metrics", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"total_requests": GlobalMetrics.Value(),
+			"total_requests": pkg.GlobalMetrics.Value(),
 		})
 	})
 
-	return ApplyMiddlewares(mux,
-		CORSMiddleware,
-		LogMiddleware,
-		RecoverMiddleware,
-		MetricsMiddleware,
+	return pkg.ApplyMiddlewares(mux,
+		pkg.CORSMiddleware,
+		pkg.LogMiddleware,
+		pkg.RecoverMiddleware,
+		pkg.MetricsMiddleware,
 	)
 }
