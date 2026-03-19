@@ -30,13 +30,13 @@ func New(parser *rss.Parser, cache *cache.Client) *Orchestrator {
 // It resolves which feeds to fetch based on filters, checks the Redis cache,
 // fetches from RSS if needed, then filters, sorts, and paginates the results.
 func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilters) (pkg.ArticlesData, error) {
-	// Step 1 — resolve the feeds to fetch based on source/category filters
+	// Step 1  -- resolve the feeds to fetch based on source/category filters
 	feeds := o.resolveFeeds(filters)
 	if len(feeds) == 0 {
 		return emptyData(filters), nil
 	}
 
-	// Step 2 — check Redis cache (skip if refresh is forced)
+	// Step 2  -- check Redis cache (skip if refresh is forced)
 	var articles []pkg.Article
 	if !filters.Refresh {
 		cached, err := o.cache.GetArticles(ctx, filters.Source, filters.Category)
@@ -49,9 +49,9 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 		}
 	}
 
-	// Step 3 — fetch from RSS feeds if cache missed or refresh forced
+	// Step 3  -- fetch from RSS feeds if cache missed or refresh forced
 	if articles == nil {
-		slog.Info("[Orchestrator] Cache miss — fetching RSS", "source", filters.Source, "category", filters.Category)
+		slog.Info("[Orchestrator] Cache miss  -- fetching RSS", "source", filters.Source, "category", filters.Category)
 		articles = o.parser.ParseFeeds(ctx, feeds)
 
 		// Store fresh results in cache
@@ -60,10 +60,10 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 		}
 	}
 
-	// Step 4 — sort by publication date descending (newest first)
+	// Step 4  -- sort by publication date descending (newest first)
 	sortByDateDesc(articles)
 
-	// Step 5 — paginate
+	// Step 5  -- paginate
 	total := len(articles)
 	paginated := paginate(articles, filters.Offset, filters.Limit)
 

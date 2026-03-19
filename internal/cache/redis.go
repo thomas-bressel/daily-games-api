@@ -40,7 +40,7 @@ func New(cfg *config.Config) (*Client, error) {
 }
 
 // buildKey returns a namespaced Redis key for articles cache entries.
-// source and category are optional — empty strings are included as-is.
+// source and category are optional  -- empty strings are included as-is.
 func buildKey(source, category string) string {
 	return fmt.Sprintf("daily-games:articles:%s:%s", source, category)
 }
@@ -52,7 +52,7 @@ func (c *Client) GetArticles(ctx context.Context, source, category string) ([]pk
 
 	val, err := c.rdb.Get(ctx, key).Result()
 	if err == redis.Nil {
-		// Cache miss — not an error
+		// Cache miss  -- not an error
 		return nil, nil
 	}
 	if err != nil {
@@ -109,7 +109,7 @@ func (c *Client) FlushAll(ctx context.Context) error {
 
 // IncrTrack atomically increments the counter for a given article event (share or bookmark).
 // Key format: daily-games:track:<articleID>:<event>
-// The counter has no TTL — it persists indefinitely.
+// The counter has no TTL  -- it persists indefinitely.
 func (c *Client) IncrTrack(ctx context.Context, articleID, event string) (int64, error) {
 	key := fmt.Sprintf("daily-games:track:%s:%s", articleID, event)
 	count, err := c.rdb.Incr(ctx, key).Result()

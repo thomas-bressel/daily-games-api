@@ -50,7 +50,7 @@ func (h *TrackHandler) GetTrack(w http.ResponseWriter, r *http.Request) {
 
 // PostTrack handles POST /api/track.
 // Increments the Redis counter for the given article and event type.
-// Event must be "share" or "bookmark" — any other value returns 400.
+// Event must be "share" or "bookmark"  -- any other value returns 400.
 func (h *TrackHandler) PostTrack(w http.ResponseWriter, r *http.Request) {
 	var body pkg.TrackEvent
 	if err := pkg.ParseJSON(w, r, &body); err != nil {
