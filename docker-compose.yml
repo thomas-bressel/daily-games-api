@@ -1,0 +1,47 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daily-games-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - REDIS_ADDR=redis:6379
+      - REDIS_PASSWORD=
+      - REDIS_DB=0
+      - CACHE_TTL_MINUTES=5
+      - MAX_ARTICLES_PER_FEED=5
+      - FETCH_TIMEOUT_SECONDS=10
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - daily-games-api-net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: daily-games-redis
+    restart: unless-stopped
+    networks:
+      - daily-games-api-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+
+networks:
+  daily-games-api-net:
+    name: daily-games-api-net
+    driver: bridge
