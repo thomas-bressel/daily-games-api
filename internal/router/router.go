@@ -24,6 +24,7 @@ func Create(articlesHandler *handler.ArticlesHandler, trackHandler *handler.Trac
 	mux.HandleFunc("GET /health", handler.GetHealth)
 	mux.HandleFunc("GET /api/articles", articlesHandler.GetArticles)
 	mux.HandleFunc("GET /api/feeds", handler.GetFeeds)
+	mux.HandleFunc("GET /api/track/{articleId}", trackHandler.GetTrack)
 	mux.HandleFunc("POST /api/track", trackHandler.PostTrack)
 	mux.HandleFunc("GET /metrics", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

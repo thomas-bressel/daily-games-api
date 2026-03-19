@@ -18,6 +18,36 @@ func NewTrackHandler(cache *cache.Client) *TrackHandler {
 	return &TrackHandler{cache: cache}
 }
 
+// GetTrack handles GET /api/track/{articleId}.
+// Returns the bookmark and share counters for a given article.
+func (h *TrackHandler) GetTrack(w http.ResponseWriter, r *http.Request) {
+	articleID := r.PathValue("articleId")
+	if articleID == "" {
+		pkg.WriteError(w, http.StatusBadRequest, "articleId is required")
+		return
+	}
+
+	bookmarks, err := h.cache.GetTrack(r.Context(), articleID, "bookmark")
+	if err != nil {
+		slog.Error("[Track] Redis error", "err", err)
+		pkg.WriteError(w, http.StatusInternalServerError, "tracking failed")
+		return
+	}
+
+	shares, err := h.cache.GetTrack(r.Context(), articleID, "share")
+	if err != nil {
+		slog.Error("[Track] Redis error", "err", err)
+		pkg.WriteError(w, http.StatusInternalServerError, "tracking failed")
+		return
+	}
+
+	pkg.WriteSuccess(w, map[string]any{
+		"articleId": articleID,
+		"bookmarks": bookmarks,
+		"shares":    shares,
+	})
+}
+
 // PostTrack handles POST /api/track.
 // Increments the Redis counter for the given article and event type.
 // Event must be "share" or "bookmark" — any other value returns 400.
