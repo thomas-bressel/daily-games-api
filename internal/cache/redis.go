@@ -107,6 +107,32 @@ func (c *Client) FlushAll(ctx context.Context) error {
 	return c.rdb.Del(ctx, keys...).Err()
 }
 
+// IncrTrack atomically increments the counter for a given article event (share or bookmark).
+// Key format: daily-games:track:<articleID>:<event>
+// The counter has no TTL — it persists indefinitely.
+func (c *Client) IncrTrack(ctx context.Context, articleID, event string) (int64, error) {
+	key := fmt.Sprintf("daily-games:track:%s:%s", articleID, event)
+	count, err := c.rdb.Incr(ctx, key).Result()
+	if err != nil {
+		return 0, fmt.Errorf("redis INCR failed: %w", err)
+	}
+	return count, nil
+}
+
+// GetTrack returns the current counter value for a given article event.
+// Returns 0 if the key does not exist.
+func (c *Client) GetTrack(ctx context.Context, articleID, event string) (int64, error) {
+	key := fmt.Sprintf("daily-games:track:%s:%s", articleID, event)
+	count, err := c.rdb.Get(ctx, key).Int64()
+	if err == redis.Nil {
+		return 0, nil
+	}
+	if err != nil {
+		return 0, fmt.Errorf("redis GET failed: %w", err)
+	}
+	return count, nil
+}
+
 // Close gracefully closes the Redis connection.
 func (c *Client) Close() error {
 	return c.rdb.Close()

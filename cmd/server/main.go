@@ -42,11 +42,14 @@ func main() {
 	// Initialise the articles HTTP handler
 	articlesHandler := handler.NewArticlesHandler(orchestrator)
 
+	// Initialise the track HTTP handler
+	trackHandler := handler.NewTrackHandler(redisClient)
+
 	// Build the router with all routes and middlewares
 	// Configure the HTTP server with protective timeouts (anti-Slowloris)
 	server := &http.Server{
 		Addr:         ":" + cfg.Port,
-		Handler:      router.Create(articlesHandler),
+		Handler:      router.Create(articlesHandler, trackHandler),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,

@@ -56,3 +56,10 @@ type ApiResponse struct {
 	Data   any    `json:"data,omitempty"`
 	Error  string `json:"error,omitempty"`
 }
+
+// TrackEvent represents a user interaction event sent by the extension.
+// Event must be either "share" or "bookmark".
+type TrackEvent struct {
+	ArticleID string `json:"articleId"`
+	Event     string `json:"event"`
+}

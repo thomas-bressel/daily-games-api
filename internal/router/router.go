@@ -13,16 +13,18 @@ import (
 //
 // Routes:
 //
-//	GET /health          - API health check
-//	GET /api/articles    - paginated article feed with optional filters
-//	GET /api/feeds       - list of active RSS feed sources
-//	GET /metrics         - total request count since server start
-func Create(articlesHandler *handler.ArticlesHandler) http.Handler {
+//	GET  /health          - API health check
+//	GET  /api/articles    - paginated article feed with optional filters
+//	GET  /api/feeds       - list of active RSS feed sources
+//	POST /api/track       - increment share or bookmark counter for an article
+//	GET  /metrics         - total request count since server start
+func Create(articlesHandler *handler.ArticlesHandler, trackHandler *handler.TrackHandler) http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /health", handler.GetHealth)
 	mux.HandleFunc("GET /api/articles", articlesHandler.GetArticles)
 	mux.HandleFunc("GET /api/feeds", handler.GetFeeds)
+	mux.HandleFunc("POST /api/track", trackHandler.PostTrack)
 	mux.HandleFunc("GET /metrics", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
