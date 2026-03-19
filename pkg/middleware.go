@@ -57,25 +57,7 @@ func MetricsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// CORSMiddleware adds permissive CORS headers to allow the Chrome extension
-// to call the API from any origin.
-func CORSMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-		// Handle preflight requests
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
-}
-
-// ApplyMiddlewares wraps a handler with a chain of middlewares.
+//ApplyMiddlewares wraps a handler with a chain of middlewares.
 // Middlewares are applied in reverse order so the first one in the list
 // is the outermost (executed first).
 func ApplyMiddlewares(h http.Handler, mws ...func(http.Handler) http.Handler) http.Handler {

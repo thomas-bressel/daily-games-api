@@ -31,7 +31,6 @@ func Create(articlesHandler *handler.ArticlesHandler) http.Handler {
 	})
 
 	return pkg.ApplyMiddlewares(mux,
-		pkg.CORSMiddleware,
 		pkg.LogMiddleware,
 		pkg.RecoverMiddleware,
 		pkg.MetricsMiddleware,
