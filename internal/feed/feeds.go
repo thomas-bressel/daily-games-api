@@ -12,6 +12,7 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "vgc", Name: "VGC", URL: "https://www.videogameschronicle.com/feed/", Category: "nextgen", Lang: "en", Description: "Unbiased news, reporting and features from the global gaming industry.", IsActive: true},
 	{ID: "gameradar", Name: "GamesRadar+", URL: "https://www.gamesradar.com/feeds.xml", Category: "nextgen", Lang: "en", Description: "Breaking news, reviews and features from the world of gaming.", IsActive: true},
 	{ID: "bistro", Name: "Le bistro du jeu video", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCRXcryyD7dzNQzd0Zkbj3ug", Category: "nextgen", Lang: "fr", Description: "Émission sur l'actualité du jeu vidéo rétro et moderne.", IsActive: true},
+	{ID: "sega-mag", Name: "Sega-Mag", URL: "https://www.sega-mag.com/rss.xml", Category: "nextgen", Lang: "fr", Description: "Toute l'actualité SEGA : news, tests et dossiers par la rédaction de Sega-Mag.", IsActive: true},
 
 	// --- 🕹️ RETROGAMING ---
 	{ID: "recalbox", Name: "Recalbox", URL: "https://www.recalbox.com/fr/rss.xml", Category: "retrogaming", Lang: "fr", Description: "Le portail de l'émulation francophone de référence pour les nostalgique.", IsActive: true},
@@ -19,6 +20,10 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "rom-game", Name: "Rom Game", URL: "https://www.rom-game.fr/rss/rss.rss", Category: "retrogaming", Lang: "fr", Description: "Toute l'actualité du retrogaming, du homebrew et des éditions physiques.", IsActive: true},
 	{ID: "abandonware", Name: "Abandonware France", URL: "https://www.abandonware-france.org/rss/abandonware/", Category: "retrogaming", Lang: "fr", Description: "L'histoire du jeu vidéo sur PC à travers les titres du patrimoine.", IsActive: true},
 	{ID: "backin", Name: "Back in Toys TV", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCy2_IMeOgTZ-NYsmGB2_qUw", Category: "retrogaming", Lang: "fr", Description: "Actualité geek, jouets vintage et jeux vidéo rétro.", IsActive: true},
+	{ID: "conkerax", Name: "Conkerax", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCnyXbcCPqBOf_qXjyNF7dlg", Category: "retrogaming", Lang: "fr", Description: "Bienvenue à tous sur la chaîne d'un passionné de jeux vidéo, collectionneur, player, avec un petit (gros !) faible pour la Nintendo Gamecube.", IsActive: true},
+	{ID: "oldschoolisbeautifull", Name: "Old School Is Beautifull", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCMUvAvf9UMdyq_VCog9CZVA", Category: "retrogaming", Lang: "fr", Description: "Plonge dans les histoires des consoles oubliées, des jeux cultes et des nouveaux jeux pour ces anciennes machines !", IsActive: true},
+	{ID: "passionjeuxvideotv", Name: "Passion Jeux Vidéo TV", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC9ci-PpcfhI9uN3qfqHjqlQ", Category: "retrogaming", Lang: "fr", Description: "Prêt à remonter le temps ? 🕹️ Viens (re)plonger dans l'âge d'or du jeu vidéo !", IsActive: true},
+	{ID: "jdg", Name: "Le Joueur du Grenier", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC_yP2DpIgs5Y1uWC0T03Chw", Category: "retrogaming", Lang: "fr", Description: "Test de jeux à la con !", IsActive: true},
 	{ID: "reddit-retro", Name: "Reddit Retrogaming", URL: "https://www.reddit.com/r/retrogaming/.rss", Category: "retrogaming", Lang: "en", Description: "The premier Reddit community for classic gaming enthusiasts.", IsActive: true},
 	{ID: "vintageisthenewold", Name: "Vintage is the New Old", URL: "https://www.vintageisthenewold.com/feed/", Category: "retrogaming", Lang: "en", Description: "News about classic systems, computing history and homebrew releases.", IsActive: true},
 

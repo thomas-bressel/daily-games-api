@@ -14,6 +14,9 @@ var firstImgRe = regexp.MustCompile(`(?i)<img[^>]+src=["']([^"']+)["']`)
 // textInnerRe extracts all content inside et_pb_text_inner divs (Divi/ET Builder).
 var textInnerRe = regexp.MustCompile(`(?i)<div[^>]+class="et_pb_text_inner"[^>]*>([\s\S]*?)</div>`)
 
+// segaTextRe extracts content from Drupal field--name-field-text divs (Sega-Mag).
+var segaTextRe = regexp.MustCompile(`(?i)<div[^>]+class="[^"]*field--name-field-text[^"]*"[^>]*>([\s\S]*?)</div>`)
+
 // htmlTagRe strips all HTML tags.
 var htmlTagRe = regexp.MustCompile(`<[^>]+>`)
 
@@ -29,6 +32,7 @@ type Enricher func(item *gofeed.Item) (imageURL string, description string)
 var enrichers = map[string]Enricher{
 	"abandonware": enrichAbandonware,
 	"amstrad-eu":  enrichAmstradEU,
+	"sega-mag":    enrichSegaMag,
 }
 
 // enrichAmstradEU handles the Amstrad.eu WordPress/Divi feed:
@@ -55,6 +59,27 @@ func enrichAmstradEU(item *gofeed.Item) (imageURL string, description string) {
 		}
 		description = text
 		break
+	}
+
+	return imageURL, description
+}
+
+// enrichSegaMag handles the Sega-Mag Drupal feed:
+//  1. Image: first <img src> in the description HTML.
+//  2. Description: content of the field--name-field-text div (clean HTML, no double-encoding).
+func enrichSegaMag(item *gofeed.Item) (imageURL string, description string) {
+	raw := item.Description
+	if raw == "" {
+		return "", ""
+	}
+
+	if m := firstImgRe.FindStringSubmatch(raw); len(m) > 1 {
+		imageURL = m[1]
+	}
+
+	if m := segaTextRe.FindStringSubmatch(raw); len(m) > 1 {
+		text := strings.TrimSpace(htmlTagRe.ReplaceAllString(m[1], " "))
+		description = strings.Join(strings.Fields(text), " ")
 	}
 
 	return imageURL, description

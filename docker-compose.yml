@@ -14,7 +14,7 @@ services:
       - REDIS_PASSWORD=
       - REDIS_DB=0
       - CACHE_TTL_MINUTES=5
-      - MAX_ARTICLES_PER_FEED=5
+      - MAX_ARTICLES_PER_FEED=10
       - FETCH_TIMEOUT_SECONDS=10
     depends_on:
       redis:
