@@ -14,6 +14,7 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "bistro", Name: "Le bistro du jeu video", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCRXcryyD7dzNQzd0Zkbj3ug", Category: "nextgen", Lang: "fr", Description: "Émission sur l'actualité du jeu vidéo rétro et moderne.", IsActive: true},
 
 	// --- 🕹️ RETROGAMING ---
+	{ID: "recalbox", Name: "Recalbox", URL: "https://www.recalbox.com/fr/rss.xml", Category: "retrogaming", Lang: "fr", Description: "Le portail de l'émulation francophone de référence pour les nostalgique.", IsActive: true},
 	{ID: "mo5", Name: "Association MO5", URL: "https://mag.mo5.com/feed/", Category: "retrogaming", Lang: "fr", Description: "L'actualité de la préservation du patrimoine numérique par l'association MO5.", IsActive: true},
 	{ID: "rom-game", Name: "Rom Game", URL: "https://www.rom-game.fr/rss/rss.rss", Category: "retrogaming", Lang: "fr", Description: "Toute l'actualité du retrogaming, du homebrew et des éditions physiques.", IsActive: true},
 	{ID: "abandonware", Name: "Abandonware France", URL: "https://www.abandonware-france.org/rss/abandonware/", Category: "retrogaming", Lang: "fr", Description: "L'histoire du jeu vidéo sur PC à travers les titres du patrimoine.", IsActive: true},
