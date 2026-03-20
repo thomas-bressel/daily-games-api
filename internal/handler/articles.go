@@ -43,6 +43,7 @@ func (h *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 		Limit:    limit,
 		Source:   q.Get("source"),
 		Category: q.Get("category"),
+		Lang:     q.Get("lang"),
 		Refresh:  q.Get("refresh") == "true",
 	}
 

@@ -77,7 +77,7 @@ func (p *Parser) ParseFeed(ctx context.Context, feed pkg.Feed) ([]pkg.Article, e
 
 	articles := make([]pkg.Article, 0, limit)
 	for _, item := range parsed.Items[:limit] {
-		article := p.transformItem(item, feed)
+		article := p.transformItem(ctx, item, feed)
 		articles = append(articles, article)
 	}
 
@@ -118,7 +118,7 @@ func (p *Parser) ParseFeeds(ctx context.Context, feeds []pkg.Feed) []pkg.Article
 
 // transformItem converts a raw gofeed.Item into a pkg.Article.
 // It extracts the best available image, cleans the description, and generates tags.
-func (p *Parser) transformItem(item *gofeed.Item, feed pkg.Feed) pkg.Article {
+func (p *Parser) transformItem(ctx context.Context, item *gofeed.Item, feed pkg.Feed) pkg.Article {
 	pubDate := time.Now()
 	if item.PublishedParsed != nil {
 		pubDate = *item.PublishedParsed
@@ -127,8 +127,20 @@ func (p *Parser) transformItem(item *gofeed.Item, feed pkg.Feed) pkg.Article {
 	}
 
 	creator := extractCreator(item)
-	description := pkg.CleanDescription(extractDescription(item), 200)
+	rawDescription := extractDescription(item)
 	imageURL := extractImage(item)
+
+	if enricher, ok := enrichers[feed.ID]; ok {
+		enrichedImage, enrichedDesc := enricher(item)
+		if enrichedImage != "" {
+			imageURL = enrichedImage
+		}
+		if enrichedDesc != "" {
+			rawDescription = enrichedDesc
+		}
+	}
+
+	description := pkg.CleanDescription(rawDescription, 200)
 	tags := pkg.ExtractTags(item.Title, description)
 
 	return pkg.Article{
@@ -169,13 +181,7 @@ func extractDescription(item *gofeed.Item) string {
 	if item.Description != "" {
 		return item.Description
 	}
-	if item.Content != "" {
-		if len(item.Content) > 500 {
-			return item.Content[:500]
-		}
-		return item.Content
-	}
-	return ""
+	return item.Content
 }
 
 // extractImage returns the best available image URL from a feed item.

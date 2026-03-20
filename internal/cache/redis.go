@@ -40,15 +40,15 @@ func New(cfg *config.Config) (*Client, error) {
 }
 
 // buildKey returns a namespaced Redis key for articles cache entries.
-// source and category are optional  -- empty strings are included as-is.
-func buildKey(source, category string) string {
-	return fmt.Sprintf("daily-games:articles:%s:%s", source, category)
+// source, category and lang are optional  -- empty strings are included as-is.
+func buildKey(source, category, lang string) string {
+	return fmt.Sprintf("daily-games:articles:%s:%s:%s", source, category, lang)
 }
 
 // GetArticles retrieves a cached article list from Redis.
 // Returns nil, nil if the key does not exist (cache miss).
-func (c *Client) GetArticles(ctx context.Context, source, category string) ([]pkg.Article, error) {
-	key := buildKey(source, category)
+func (c *Client) GetArticles(ctx context.Context, source, category, lang string) ([]pkg.Article, error) {
+	key := buildKey(source, category, lang)
 
 	val, err := c.rdb.Get(ctx, key).Result()
 	if err == redis.Nil {
@@ -68,8 +68,8 @@ func (c *Client) GetArticles(ctx context.Context, source, category string) ([]pk
 }
 
 // SetArticles stores an article list in Redis with the configured TTL.
-func (c *Client) SetArticles(ctx context.Context, source, category string, articles []pkg.Article) error {
-	key := buildKey(source, category)
+func (c *Client) SetArticles(ctx context.Context, source, category, lang string, articles []pkg.Article) error {
+	key := buildKey(source, category, lang)
 
 	data, err := json.Marshal(articles)
 	if err != nil {
@@ -85,8 +85,8 @@ func (c *Client) SetArticles(ctx context.Context, source, category string, artic
 
 // DeleteArticles removes a specific cache entry from Redis.
 // Used to force a refresh for a given source/category combination.
-func (c *Client) DeleteArticles(ctx context.Context, source, category string) error {
-	key := buildKey(source, category)
+func (c *Client) DeleteArticles(ctx context.Context, source, category, lang string) error {
+	key := buildKey(source, category, lang)
 	return c.rdb.Del(ctx, key).Err()
 }
 

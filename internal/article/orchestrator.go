@@ -39,23 +39,23 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 	// Step 2  -- check Redis cache (skip if refresh is forced)
 	var articles []pkg.Article
 	if !filters.Refresh {
-		cached, err := o.cache.GetArticles(ctx, filters.Source, filters.Category)
+		cached, err := o.cache.GetArticles(ctx, filters.Source, filters.Category, filters.Lang)
 		if err != nil {
 			slog.Warn("[Orchestrator] Cache read error", "err", err)
 		}
 		if cached != nil {
-			slog.Info("[Orchestrator] Cache hit", "source", filters.Source, "category", filters.Category)
+			slog.Info("[Orchestrator] Cache hit", "source", filters.Source, "category", filters.Category, "lang", filters.Lang)
 			articles = cached
 		}
 	}
 
 	// Step 3  -- fetch from RSS feeds if cache missed or refresh forced
 	if articles == nil {
-		slog.Info("[Orchestrator] Cache miss  -- fetching RSS", "source", filters.Source, "category", filters.Category)
+		slog.Info("[Orchestrator] Cache miss  -- fetching RSS", "source", filters.Source, "category", filters.Category, "lang", filters.Lang)
 		articles = o.parser.ParseFeeds(ctx, feeds)
 
 		// Store fresh results in cache
-		if err := o.cache.SetArticles(ctx, filters.Source, filters.Category, articles); err != nil {
+		if err := o.cache.SetArticles(ctx, filters.Source, filters.Category, filters.Lang, articles); err != nil {
 			slog.Warn("[Orchestrator] Cache write error", "err", err)
 		}
 	}
@@ -80,8 +80,9 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 
 // resolveFeeds returns the list of feeds to fetch based on the active filters.
 // If a source ID is provided, only that feed is returned.
-// If a category is provided, all active feeds in that category are returned.
-// Otherwise all active feeds are returned.
+// If a category is provided, feeds are filtered by category (and lang if set).
+// If only lang is provided, feeds are filtered by lang.
+// Otherwise all active feeds are returned (filtered by lang if set).
 func (o *Orchestrator) resolveFeeds(filters pkg.ArticleFilters) []pkg.Feed {
 	if filters.Source != "" {
 		f, ok := feed.GetByID(filters.Source)
@@ -91,8 +92,16 @@ func (o *Orchestrator) resolveFeeds(filters pkg.ArticleFilters) []pkg.Feed {
 		return []pkg.Feed{f}
 	}
 
+	if filters.Category != "" && filters.Lang != "" {
+		return feed.GetByCategoryAndLang(filters.Category, filters.Lang)
+	}
+
 	if filters.Category != "" {
 		return feed.GetByCategory(filters.Category)
+	}
+
+	if filters.Lang != "" {
+		return feed.GetByLang(filters.Lang)
 	}
 
 	return feed.GetActive()

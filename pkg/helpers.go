@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html"
 	"io"
 	"net/http"
 	"regexp"
@@ -69,16 +70,10 @@ func CleanDescription(raw string, maxLength int) string {
 	re := regexp.MustCompile(`<[^>]+>`)
 	clean := re.ReplaceAllString(raw, "")
 
-	// Decode common HTML entities
-	replacer := strings.NewReplacer(
-		"&amp;", "&",
-		"&lt;", "<",
-		"&gt;", ">",
-		"&quot;", `"`,
-		"&#39;", "'",
-		"&nbsp;", " ",
-	)
-	clean = replacer.Replace(clean)
+	// Decode all HTML entities (named + numeric like &#160;)
+	clean = html.UnescapeString(clean)
+	// Normalize non-breaking spaces to regular spaces
+	clean = strings.ReplaceAll(clean, "\u00a0", " ")
 	clean = strings.TrimSpace(clean)
 
 	// Truncate to maxLength runes (not bytes)

@@ -23,6 +23,7 @@ type Feed struct {
 	Name        string `json:"name"`
 	URL         string `json:"url"`
 	Category    string `json:"category"`
+	Lang        string `json:"lang"`
 	Description string `json:"description"`
 	IsActive    bool   `json:"isActive"`
 }
@@ -31,6 +32,7 @@ type Feed struct {
 type ArticleFilters struct {
 	Source   string
 	Category string
+	Lang     string
 	Offset   int
 	Limit    int
 	Refresh  bool
