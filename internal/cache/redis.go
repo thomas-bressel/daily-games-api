@@ -133,6 +133,43 @@ func (c *Client) GetTrack(ctx context.Context, articleID, event string) (int64, 
 	return count, nil
 }
 
+// GetBatchTrack returns bookmark and share counters for multiple articles in a single pipeline.
+// Uses a Redis pipeline to fetch all keys in one round-trip instead of N individual GET calls.
+// Articles with no counter return 0 for both fields.
+func (c *Client) GetBatchTrack(ctx context.Context, articleIDs []string) (map[string]map[string]int64, error) {
+	pipe := c.rdb.Pipeline()
+	type entry struct {
+		id    string
+		event string
+		cmd   *redis.StringCmd
+	}
+
+	entries := make([]entry, 0, len(articleIDs)*2)
+	for _, id := range articleIDs {
+		for _, event := range []string{"bookmark", "share"} {
+			key := fmt.Sprintf("daily-games:track:%s:%s", id, event)
+			entries = append(entries, entry{id: id, event: event, cmd: pipe.Get(ctx, key)})
+		}
+	}
+
+	if _, err := pipe.Exec(ctx); err != nil && err != redis.Nil {
+		return nil, fmt.Errorf("redis pipeline failed: %w", err)
+	}
+
+	result := make(map[string]map[string]int64, len(articleIDs))
+	for _, e := range entries {
+		if result[e.id] == nil {
+			result[e.id] = map[string]int64{"bookmark": 0, "share": 0}
+		}
+		val, err := e.cmd.Int64()
+		if err == nil {
+			result[e.id][e.event] = val
+		}
+	}
+
+	return result, nil
+}
+
 // Close gracefully closes the Redis connection.
 func (c *Client) Close() error {
 	return c.rdb.Close()

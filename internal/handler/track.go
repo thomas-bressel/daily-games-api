@@ -48,6 +48,42 @@ func (h *TrackHandler) GetTrack(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// PostTrackBatch handles POST /api/track/batch.
+// Returns bookmark and share counters for multiple articles in a single request.
+// Expects body: { "ids": ["id1", "id2", ...] }
+// Returns: { "status": "ok", "data": { "id1": { "bookmarks": N, "shares": N }, ... } }
+func (h *TrackHandler) PostTrackBatch(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		IDs []string `json:"ids"`
+	}
+	if err := pkg.ParseJSON(w, r, &body); err != nil {
+		pkg.WriteError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+
+	if len(body.IDs) == 0 {
+		pkg.WriteSuccess(w, map[string]any{})
+		return
+	}
+
+	counts, err := h.cache.GetBatchTrack(r.Context(), body.IDs)
+	if err != nil {
+		slog.Error("[Track] Redis batch error", "err", err)
+		pkg.WriteError(w, http.StatusInternalServerError, "tracking failed")
+		return
+	}
+
+	result := make(map[string]any, len(counts))
+	for id, c := range counts {
+		result[id] = map[string]int64{
+			"bookmarks": c["bookmark"],
+			"shares":    c["share"],
+		}
+	}
+
+	pkg.WriteSuccess(w, result)
+}
+
 // PostTrack handles POST /api/track.
 // Increments the Redis counter for the given article and event type.
 // Event must be "share" or "bookmark"  -- any other value returns 400.
