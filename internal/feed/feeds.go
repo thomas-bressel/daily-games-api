@@ -40,13 +40,14 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "gbatemp", Name: "GBAtemp", URL: "https://gbatemp.net/feed/news", Category: "homebrew", Lang: "en", Description: "Independent gaming community focused on console hacking and homebrew.", IsActive: true},
 	{ID: "scene-world", Name: "Scene World", URL: "https://feeds.feedburner.com/sceneworldpodcast", Category: "homebrew", Lang: "en", Description: "The digital magazine and podcast covering the international computing scene.", IsActive: true},
 
-	// --- 📦 MACHINES (NICHE) ---
-	{ID: "amstrad-eu", Name: "Amstrad.eu", URL: "https://amstrad.eu/feed/", Category: "niche", Lang: "fr", Description: "Le portail communautaire francophone de référence pour l'Amstrad CPC.", IsActive: true},
-	// {ID: "64nops", Name: "64nops", URL: "https://64nops.wordpress.com/feed/", Category: "niche", Lang: "fr", Description: "Le blog de la scène Amstrad CPC, programmation et nouveautés.", IsActive: true},
-	// {ID: "ucpm", Name: "ùCPM Blog", URL: "https://ucpmblog.ovh/index.php/feed/", Category: "niche", Lang: "fr", Description: "Blog dédié à l'actualité et au développement sur Amstrad CPC.", IsActive: true},
-	// {ID: "amstariga", Name: "Amstariga", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCZnozTrLo1y-4VSdTYfC5dQ", Category: "niche", Lang: "fr", Description: "Chaîne YouTube dédiée aux machines 8 bits et à l'Amstrad CPC.", IsActive: true},
-	// {ID: "octoate", Name: "Octoate", URL: "https://www.octoate.de/feed/", Category: "niche", Lang: "en", Description: "The Amstrad CPC resource for news, articles and technical information.", IsActive: true},
-	// {ID: "atariage", Name: "Atariage", URL: "https://www.atariage.com/news/rss.php", Category: "niche", Lang: "en", Description: "The premier website for everything related to Atari systems and homebrew.", IsActive: true},
+	// --- 📦 MACHINES ---
+	{ID: "amstrad-eu", Name: "Amstrad.eu", URL: "https://amstrad.eu/feed/", Category: "computing", Lang: "fr", Description: "Le portail communautaire francophone de référence pour l'Amstrad CPC.", IsActive: true},
+	{ID: "vretrocomputing", Name: "Vretro Computing", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCG4S3PerB8tmodN-tpGQthA", Category: "computing", Lang: "fr", Description: "Utiliser de nos jours les ordinateurs populaires des années 80. Atari ST, Amiga... mais pas seulement. Modifications hardware et émulateurs. Développer pour ces machines avec les outils modernes.", IsActive: true},
+	// {ID: "64nops", Name: "64nops", URL: "https://64nops.wordpress.com/feed/", Category: "computing", Lang: "fr", Description: "Le blog de la scène Amstrad CPC, programmation et nouveautés.", IsActive: true},
+	// {ID: "ucpm", Name: "ùCPM Blog", URL: "https://ucpmblog.ovh/index.php/feed/", Category: "computing", Lang: "fr", Description: "Blog dédié à l'actualité et au développement sur Amstrad CPC.", IsActive: true},
+	// {ID: "amstariga", Name: "Amstariga", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCZnozTrLo1y-4VSdTYfC5dQ", Category: "computing", Lang: "fr", Description: "Chaîne YouTube dédiée aux machines 8 bits et à l'Amstrad CPC.", IsActive: true},
+	// {ID: "octoate", Name: "Octoate", URL: "https://www.octoate.de/feed/", Category: "computing", Lang: "en", Description: "The Amstrad CPC resource for news, articles and technical information.", IsActive: true},
+	// {ID: "atariage", Name: "Atariage", URL: "https://www.atariage.com/news/rss.php", Category: "computing", Lang: "en", Description: "The premier website for everything related to Atari systems and homebrew.", IsActive: true},
 }
 
 // GetAll returns all configured feeds regardless of their active status.
