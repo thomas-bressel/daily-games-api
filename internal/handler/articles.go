@@ -24,11 +24,13 @@ func NewArticlesHandler(orchestrator *article.Orchestrator) *ArticlesHandler {
 //
 // Query parameters:
 //
-//	offset   int    - number of articles to skip (default: 0)
-//	limit    int    - max articles to return (default: 20, max: 100)
-//	source   string - filter by feed source ID (e.g. "amstrad-eu")
-//	category string - filter by category (e.g. "retrogaming")
-//	refresh  bool   - force bypass of Redis cache (default: false)
+//	offset          int    - number of articles to skip (default: 0)
+//	limit           int    - max articles to return (default: 20, max: 100)
+//	source          string - filter by feed source ID (e.g. "amstrad-eu")
+//	category        string - filter by category (e.g. "retrogaming")
+//	refresh         bool   - force bypass of Redis cache (default: false)
+//	excludeSource   string - exclude a feed source (repeatable)
+//	excludeCategory string - exclude a category (repeatable)
 func (h *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 
@@ -39,12 +41,14 @@ func (h *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	filters := pkg.ArticleFilters{
-		Offset:   offset,
-		Limit:    limit,
-		Source:   q.Get("source"),
-		Category: q.Get("category"),
-		Lang:     q.Get("lang"),
-		Refresh:  q.Get("refresh") == "true",
+		Offset:            offset,
+		Limit:             limit,
+		Source:            q.Get("source"),
+		Category:          q.Get("category"),
+		Lang:              q.Get("lang"),
+		Refresh:           q.Get("refresh") == "true",
+		ExcludeSources:    q["excludeSource"],
+		ExcludeCategories: q["excludeCategory"],
 	}
 
 	data, err := h.orchestrator.GetArticles(r.Context(), filters)

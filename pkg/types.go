@@ -30,12 +30,14 @@ type Feed struct {
 
 // ArticleFilters holds optional query parameters for filtering articles.
 type ArticleFilters struct {
-	Source   string
-	Category string
-	Lang     string
-	Offset   int
-	Limit    int
-	Refresh  bool
+	Source            string
+	Category          string
+	Lang              string
+	Offset            int
+	Limit             int
+	Refresh           bool
+	ExcludeSources    []string
+	ExcludeCategories []string
 }
 
 // ArticlesData is the payload returned by the GET /api/articles endpoint.

@@ -32,6 +32,7 @@ func New(parser *rss.Parser, cache *cache.Client) *Orchestrator {
 func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilters) (pkg.ArticlesData, error) {
 	// Step 1  -- resolve the feeds to fetch based on source/category filters
 	feeds := o.resolveFeeds(filters)
+	feeds = excludeFeeds(feeds, filters.ExcludeSources, filters.ExcludeCategories)
 	if len(feeds) == 0 {
 		return emptyData(filters), nil
 	}
@@ -110,6 +111,28 @@ func (o *Orchestrator) resolveFeeds(filters pkg.ArticleFilters) []pkg.Feed {
 	}
 
 	return feed.GetActive()
+}
+
+// excludeFeeds removes feeds whose ID is in excludeSources or whose category is in excludeCategories.
+func excludeFeeds(feeds []pkg.Feed, excludeSources, excludeCategories []string) []pkg.Feed {
+	if len(excludeSources) == 0 && len(excludeCategories) == 0 {
+		return feeds
+	}
+	srcSet := make(map[string]bool, len(excludeSources))
+	for _, s := range excludeSources {
+		srcSet[s] = true
+	}
+	catSet := make(map[string]bool, len(excludeCategories))
+	for _, c := range excludeCategories {
+		catSet[c] = true
+	}
+	result := feeds[:0:0]
+	for _, f := range feeds {
+		if !srcSet[f.ID] && !catSet[f.Category] {
+			result = append(result, f)
+		}
+	}
+	return result
 }
 
 // onePerSource returns the most recent article for each unique source.
