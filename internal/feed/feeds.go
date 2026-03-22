@@ -65,9 +65,16 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "amstrad-eu", Name: "Amstrad.eu", URL: "https://amstrad.eu/feed/", Category: "computing", Lang: "fr", Description: "Le portail communautaire francophone de référence pour l'Amstrad CPC.", IsActive: true},
 	{ID: "amiga-impact", Name: "Amiga Impact", URL: "https://www.amigaimpact.org/feed/", Category: "computing", Lang: "fr", Description: "Actualités et ressources pour les utilisateurs d'AmigaOS, AROS et MorphOS", IsActive: true},
 	{ID: "asmtariste", Name: "ASMtariSTe", URL: "https://www.asmtariste.fr/feed", Category: "computing", Lang: "fr", Description: "Apprendre l'assembleur 68000 sur Atari ST/STe", IsActive: true},
-	// {ID: "64nops", Name: "64nops", URL: "https://64nops.wordpress.com/feed/", Category: "computing", Lang: "fr", Description: "Le blog de la scène Amstrad CPC, programmation et nouveautés.", IsActive: true},
+	{ID: "generation-micros", Name: "Génération Micros", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCn7r5PVBk3B8M5iphVHhnmw", Category: "computing", Lang: "fr", Description: "Bienvenue chez Génération Micros, la chaîne qui va vous faire retourner au siècle dernier, redécouvrir les pépites et leurs histoires, sur les nombreux ordinateurs 8 16 bits de l'époque.", IsActive: true},
+	{ID: "c64-universe", Name: "The Universe Of C64", URL: "https://c64universe.com/feed/", Category: "computing", Lang: "en", Description: "Games, stories, and modern tips", IsActive: true},
 	// {ID: "ucpm", Name: "ùCPM Blog", URL: "https://ucpmblog.ovh/index.php/feed/", Category: "computing", Lang: "fr", Description: "Blog dédié à l'actualité et au développement sur Amstrad CPC.", IsActive: true},
 	// {ID: "amstariga", Name: "Amstariga", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCZnozTrLo1y-4VSdTYfC5dQ", Category: "computing", Lang: "fr", Description: "Chaîne YouTube dédiée aux machines 8 bits et à l'Amstrad CPC.", IsActive: true},
+
+	// --- ESPORT ---
+	// -- FR
+	{ID: "e-sport-fr", Name: "E.Sport", URL: "https://e.sport.fr/feed", Category: "esport", Lang: "fr", Description: "L'actu du esport et du gaming !", IsActive: true},
+	// -- EN
+	{ID: "esports-gg", Name: "Esports GG", URL: "https://esports.gg/feed/", Category: "esport", Lang: "en", Description: "Join esports fans worldwide at the premier news &amp; analysis outlet for competitive gaming, streamer culture, top-tier titles including LoL, Dota 2, Valorant &amp; more.", IsActive: true},
 }
 
 // GetAll returns all configured feeds regardless of their active status.
