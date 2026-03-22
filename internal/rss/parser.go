@@ -140,12 +140,14 @@ func (p *Parser) transformItem(ctx context.Context, item *gofeed.Item, feed pkg.
 		}
 	}
 
+	title := strings.TrimSpace(item.Title)
+
 	description := pkg.CleanDescription(rawDescription, 200)
 	tags := pkg.ExtractTags(item.Title, description)
 
 	return pkg.Article{
 		ID:          generateID(feed.ID, item.Link),
-		Title:       strings.TrimSpace(item.Title),
+		Title:       title,
 		Link:        item.Link,
 		PubDate:     pubDate,
 		Creator:     creator,

@@ -34,8 +34,8 @@ func (h *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 
 	offset := parseIntParam(q.Get("offset"), 0)
 	limit := parseIntParam(q.Get("limit"), 20)
-	if limit > 100 {
-		limit = 100
+	if limit > 200 {
+		limit = 200
 	}
 
 	filters := pkg.ArticleFilters{
