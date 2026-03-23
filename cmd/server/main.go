@@ -16,7 +16,61 @@ import (
 	"github.com/tbressel/daily-games-api/internal/handler"
 	"github.com/tbressel/daily-games-api/internal/router"
 	"github.com/tbressel/daily-games-api/internal/rss"
+	"github.com/tbressel/daily-games-api/pkg"
 )
+
+// cacheWarmupCombinations lists all category+lang combinations to pre-warm.
+// Each entry maps directly to a Redis cache key.
+var cacheWarmupCombinations = []pkg.ArticleFilters{
+	{Category: "nextgen", Lang: "fr", Limit: 200, Refresh: true},
+	{Category: "nextgen", Lang: "en", Limit: 200, Refresh: true},
+	{Category: "retrogaming", Lang: "fr", Limit: 200, Refresh: true},
+	{Category: "retrogaming", Lang: "en", Limit: 200, Refresh: true},
+	{Category: "indie", Lang: "fr", Limit: 200, Refresh: true},
+	{Category: "indie", Lang: "en", Limit: 200, Refresh: true},
+	{Category: "homebrew", Lang: "en", Limit: 200, Refresh: true},
+	{Category: "computing", Lang: "fr", Limit: 200, Refresh: true},
+	{Category: "computing", Lang: "en", Limit: 200, Refresh: true},
+	{Category: "esport", Lang: "fr", Limit: 200, Refresh: true},
+	{Category: "esport", Lang: "en", Limit: 200, Refresh: true},
+}
+
+// startCacheWarmer launches a background goroutine that pre-warms the Redis cache
+// immediately on startup, then repeats every interval until ctx is cancelled.
+func startCacheWarmer(ctx context.Context, o *article.Orchestrator, interval time.Duration) {
+	go func() {
+		warm := func() {
+			for _, filters := range cacheWarmupCombinations {
+				if ctx.Err() != nil {
+					return
+				}
+				_, err := o.GetArticles(ctx, filters)
+				if err != nil {
+					slog.Warn("[CacheWarmer] Failed to warm cache", "category", filters.Category, "lang", filters.Lang, "err", err)
+				} else {
+					slog.Info("[CacheWarmer] Warmed", "category", filters.Category, "lang", filters.Lang)
+				}
+			}
+		}
+
+		slog.Info("[CacheWarmer] Initial warm-up started")
+		warm()
+		slog.Info("[CacheWarmer] Initial warm-up done")
+
+		ticker := time.NewTicker(interval)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				slog.Info("[CacheWarmer] Stopped")
+				return
+			case <-ticker.C:
+				slog.Info("[CacheWarmer] Refreshing cache")
+				warm()
+			}
+		}
+	}()
+}
 
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
@@ -58,6 +112,9 @@ func main() {
 	// This context is cancelled automatically on SIGINT / SIGTERM
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
+
+	// Start the background cache warmer (runs immediately, then every 10 minutes)
+	startCacheWarmer(ctx, orchestrator, 10*time.Minute)
 
 	// Start the server in a goroutine so we can listen for shutdown signals
 	go func() {

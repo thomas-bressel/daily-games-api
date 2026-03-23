@@ -37,7 +37,7 @@ func Load() *Config {
 		RedisAddr:           getEnv("REDIS_ADDR", "redis:6379"),
 		RedisPassword:       getEnv("REDIS_PASSWORD", ""),
 		RedisDB:             getEnvInt("REDIS_DB", 0),
-		CacheTTLMinutes:     getEnvInt("CACHE_TTL_MINUTES", 5),
+		CacheTTLMinutes:     getEnvInt("CACHE_TTL_MINUTES", 15),
 		MaxArticlesPerFeed:  getEnvInt("MAX_ARTICLES_PER_FEED", 5),
 		FetchTimeoutSeconds: getEnvInt("FETCH_TIMEOUT_SECONDS", 10),
 	}
