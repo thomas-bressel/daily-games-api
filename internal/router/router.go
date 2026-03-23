@@ -1,10 +1,11 @@
 package router
 
 import (
-	"encoding/json"
 	"net/http"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/tbressel/daily-games-api/internal/handler"
+	_ "github.com/tbressel/daily-games-api/internal/metrics"
 	"github.com/tbressel/daily-games-api/pkg"
 )
 
@@ -27,12 +28,7 @@ func Create(articlesHandler *handler.ArticlesHandler, trackHandler *handler.Trac
 	mux.HandleFunc("GET /api/track/{articleId}", trackHandler.GetTrack)
 	mux.HandleFunc("POST /api/track/batch", trackHandler.PostTrackBatch)
 	mux.HandleFunc("POST /api/track", trackHandler.PostTrack)
-	mux.HandleFunc("GET /metrics", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]any{
-			"total_requests": pkg.GlobalMetrics.Value(),
-		})
-	})
+	mux.Handle("GET /metrics", promhttp.Handler())
 
 	return pkg.ApplyMiddlewares(mux,
 		pkg.LogMiddleware,

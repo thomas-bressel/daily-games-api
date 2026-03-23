@@ -3,8 +3,11 @@ package pkg
 import (
 	"log/slog"
 	"net/http"
+	"strconv"
 	"sync/atomic"
 	"time"
+
+	"github.com/tbressel/daily-games-api/internal/metrics"
 )
 
 // metricsCounter is a thread-safe request counter using atomic operations.
@@ -25,13 +28,28 @@ func (m *metricsCounter) Value() uint64 {
 // GlobalMetrics is the shared request counter accessible from the metrics endpoint.
 var GlobalMetrics metricsCounter
 
-// LogMiddleware logs the HTTP method, path, and duration of each request.
+// statusRecorder wraps ResponseWriter to capture the HTTP status code.
+type statusRecorder struct {
+	http.ResponseWriter
+	status int
+}
+
+func (sr *statusRecorder) WriteHeader(code int) {
+	sr.status = code
+	sr.ResponseWriter.WriteHeader(code)
+}
+
+// LogMiddleware logs the HTTP method, path, and duration of each request,
+// and records the latency in the Prometheus histogram.
 func LogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
+		rec := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
 		slog.Info("[REQ]", "method", r.Method, "path", r.URL.Path)
-		next.ServeHTTP(w, r)
-		slog.Info("[DONE]", "method", r.Method, "path", r.URL.Path, "duration", time.Since(start))
+		next.ServeHTTP(rec, r)
+		duration := time.Since(start)
+		slog.Info("[DONE]", "method", r.Method, "path", r.URL.Path, "duration", duration)
+		metrics.HTTPDuration.WithLabelValues(r.Method, r.URL.Path, strconv.Itoa(rec.status)).Observe(duration.Seconds())
 	})
 }
 

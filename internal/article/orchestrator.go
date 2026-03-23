@@ -7,6 +7,7 @@ import (
 
 	"github.com/tbressel/daily-games-api/internal/cache"
 	"github.com/tbressel/daily-games-api/internal/feed"
+	"github.com/tbressel/daily-games-api/internal/metrics"
 	"github.com/tbressel/daily-games-api/internal/rss"
 	"github.com/tbressel/daily-games-api/pkg"
 )
@@ -46,6 +47,7 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 		}
 		if cached != nil {
 			slog.Info("[Orchestrator] Cache hit", "source", filters.Source, "category", filters.Category, "lang", filters.Lang)
+			metrics.CacheHits.WithLabelValues(filters.Category, filters.Lang).Inc()
 			articles = cached
 		}
 	}
@@ -53,6 +55,7 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 	// Step 3  -- fetch from RSS feeds if cache missed or refresh forced
 	if articles == nil {
 		slog.Info("[Orchestrator] Cache miss  -- fetching RSS", "source", filters.Source, "category", filters.Category, "lang", filters.Lang)
+		metrics.CacheMisses.WithLabelValues(filters.Category, filters.Lang).Inc()
 		articles = o.parser.ParseFeeds(ctx, feeds)
 
 		// Store fresh results in cache

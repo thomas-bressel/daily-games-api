@@ -14,6 +14,7 @@ import (
 	"github.com/tbressel/daily-games-api/internal/article"
 	"github.com/tbressel/daily-games-api/internal/cache"
 	"github.com/tbressel/daily-games-api/internal/handler"
+	"github.com/tbressel/daily-games-api/internal/metrics"
 	"github.com/tbressel/daily-games-api/internal/router"
 	"github.com/tbressel/daily-games-api/internal/rss"
 	"github.com/tbressel/daily-games-api/pkg"
@@ -40,6 +41,7 @@ var cacheWarmupCombinations = []pkg.ArticleFilters{
 func startCacheWarmer(ctx context.Context, o *article.Orchestrator, interval time.Duration) {
 	go func() {
 		warm := func() {
+			start := time.Now()
 			for _, filters := range cacheWarmupCombinations {
 				if ctx.Err() != nil {
 					return
@@ -47,10 +49,12 @@ func startCacheWarmer(ctx context.Context, o *article.Orchestrator, interval tim
 				_, err := o.GetArticles(ctx, filters)
 				if err != nil {
 					slog.Warn("[CacheWarmer] Failed to warm cache", "category", filters.Category, "lang", filters.Lang, "err", err)
+					metrics.WarmerErrors.Inc()
 				} else {
 					slog.Info("[CacheWarmer] Warmed", "category", filters.Category, "lang", filters.Lang)
 				}
 			}
+			metrics.WarmerDuration.Observe(time.Since(start).Seconds())
 		}
 
 		slog.Info("[CacheWarmer] Initial warm-up started")
