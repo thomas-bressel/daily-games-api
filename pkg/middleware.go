@@ -75,6 +75,21 @@ func MetricsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// CORSMiddleware adds the necessary CORS headers to allow browser extensions
+// (which have no fixed origin) to call the API. It also handles OPTIONS preflight requests.
+func CORSMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 //ApplyMiddlewares wraps a handler with a chain of middlewares.
 // Middlewares are applied in reverse order so the first one in the list
 // is the outermost (executed first).
