@@ -36,13 +36,13 @@ var defaultFeeds = []pkg.Feed{
 	// -- EN
 	// {ID: "vintageisthenewold", Name: "Vintage is the New Old", URL: "https://www.vintageisthenewold.com/feed/", Category: "retrogaming", Lang: "en", Description: "News about classic systems, computing history and homebrew releases.", IsActive: true},
 	{ID: "reddit-retro", Name: "Reddit Retrogaming", URL: "https://www.reddit.com/r/retrogaming/.rss", Category: "retrogaming", Lang: "en", Description: "The premier Reddit community for classic gaming enthusiasts.", IsActive: true},
+	{ID: "indie-retro-news", Name: "Indie Retro News", URL: "http://www.indieretronews.com/feeds/posts/default?alt=rss", Category: "retrogaming", Lang: "en", Description: "Focus on indie games and retro-styled modern titles across all platforms.", IsActive: true},
 
 	// --- 💎 INDIE & DÉCOUVERTES ---
 	// -- FR
 	{ID: "indiemag", Name: "IndieMag", URL: "https://www.indiemag.fr/feed/rss.xml", Category: "indie", Lang: "fr", Description: "Le portail francophone spécialisé dans l'actualité du jeu indépendant.", IsActive: true},
 	{ID: "at0mium", Name: "At0mium", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCI0LNmSlhS-H9mGNPWM8gzQ", Category: "indie", Lang: "fr", Description: "Chroniques et découvertes quotidiennes de pépites de la scène indépendante.", IsActive: true},
 	// -- EN
-	{ID: "indie-retro-news", Name: "Indie Retro News", URL: "http://www.indieretronews.com/feeds/posts/default?alt=rss", Category: "indie", Lang: "en", Description: "Focus on indie games and retro-styled modern titles across all platforms.", IsActive: true},
 	{ID: "indiedb", Name: "Indie DB", URL: "https://rss.indiedb.com/articles/feed/rss.xml", Category: "indie", Lang: "en", Description: "Comprehensive database and latest news about independent video games.", IsActive: true},
 	{ID: "itchio", Name: "Itch.io News", URL: "https://itch.io/feed/new.xml", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
 	// {ID: "itchio", Name: "Itch.io News", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC64fwl47Wrc6VJcskll7vsA", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
