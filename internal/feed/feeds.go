@@ -37,6 +37,7 @@ var defaultFeeds = []pkg.Feed{
 	// {ID: "vintageisthenewold", Name: "Vintage is the New Old", URL: "https://www.vintageisthenewold.com/feed/", Category: "retrogaming", Lang: "en", Description: "News about classic systems, computing history and homebrew releases.", IsActive: true},
 	{ID: "reddit-retro", Name: "Reddit Retrogaming", URL: "https://www.reddit.com/r/retrogaming/.rss", Category: "retrogaming", Lang: "en", Description: "The premier Reddit community for classic gaming enthusiasts.", IsActive: true},
 	{ID: "indie-retro-news", Name: "Indie Retro News", URL: "http://www.indieretronews.com/feeds/posts/default?alt=rss", Category: "retrogaming", Lang: "en", Description: "Focus on indie games and retro-styled modern titles across all platforms.", IsActive: true},
+	{ID: "time-extension", Name: "Time Extension", URL: "https://www.timeextension.com/feeds/latest", Category: "retrogaming", Lang: "en", Description: "Time Extension brings you the latest news and features from the world of retro gaming. Giving retro and classic games more time to shine and so much more.", IsActive: true},
 
 	// --- 💎 INDIE & DÉCOUVERTES ---
 	// -- FR
