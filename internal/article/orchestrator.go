@@ -67,9 +67,10 @@ func (o *Orchestrator) GetArticles(ctx context.Context, filters pkg.ArticleFilte
 	// Step 4  -- sort by publication date descending (newest first)
 	sortByDateDesc(articles)
 
-	// Step 4b -- in "all feeds" mode (no source/category filter), cap to 1 article per source
+	// Step 4b -- in "all feeds" mode (no source/category filter), cap to 5 articles per source
+	// Applies whether or not a lang filter is active
 	if filters.Source == "" && filters.Category == "" {
-		articles = onePerSource(articles)
+		articles = nPerSource(articles, 5)
 	}
 
 	// Step 5  -- paginate
@@ -138,14 +139,14 @@ func excludeFeeds(feeds []pkg.Feed, excludeSources, excludeCategories []string) 
 	return result
 }
 
-// onePerSource returns the most recent article for each unique source.
+// nPerSource returns at most n articles per unique source.
 // Articles must already be sorted by date descending before calling this.
-func onePerSource(articles []pkg.Article) []pkg.Article {
-	seen := make(map[string]bool)
+func nPerSource(articles []pkg.Article, n int) []pkg.Article {
+	counts := make(map[string]int)
 	result := make([]pkg.Article, 0, len(articles))
 	for _, a := range articles {
-		if !seen[a.Source] {
-			seen[a.Source] = true
+		if counts[a.Source] < n {
+			counts[a.Source]++
 			result = append(result, a)
 		}
 	}
