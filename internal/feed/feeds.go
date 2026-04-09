@@ -60,9 +60,10 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "indiedb", Name: "Indie DB", URL: "https://rss.indiedb.com/articles/feed/rss.xml", Category: "indie", Lang: "en", Description: "Comprehensive database and latest news about independent video games.", IsActive: true},
 	{ID: "itchio", Name: "Itch.io News", URL: "https://itch.io/feed/new.xml", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
 	{ID: "indie-games-plus", Name: "Indie Games Plus", URL: "https://indiegamesplus.com/feed", Category: "indie", Lang: "en", Description: "Daily coverage of the latest and greatest in the independent gaming scene.", IsActive: true},
-	{ID: "warp-door", Name: "Warp Door", URL: "https://warpdoor.com/rss", Category: "indie", Lang: "en", Description: "A curated look at small, experimental, and weird indie games.", IsActive: true},
 	// --- PROBLEM : Itchio is using a cloudflare server : impossible to acces to rss feeds
 	// {ID: "itchio", Name: "Itch.io News", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC64fwl47Wrc6VJcskll7vsA", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
+	// --- PROBLEM : Warpdoor check robots: impossible to acces to rss feeds
+	// {ID: "warp-door", Name: "Warp Door", URL: "https://warpdoor.com/rss/", Category: "indie", Lang: "en", Description: "A curated look at small, experimental, and weird indie games.", IsActive: true},
 
 	// --------------------------
 	// --- 🛠️ HOMEBREW & TECH ---
@@ -76,12 +77,12 @@ var defaultFeeds = []pkg.Feed{
 	// --FR
 
 	// -------------------
-	// --- 📦 MACHINES ---
+	// --- 📦 COMPUTING ---
 	// -------------------
 	// -- EN
 	{ID: "atarilegend", Name: "Atari Legend", URL: "https://www.atarilegend.com/feed", Category: "computing", Lang: "en", Description: "Information, reviews and comments about Atari ST games, interviews of famous Atari ST game developers, contribute missing information to the database.", IsActive: true},
 	{ID: "pouet-net", Name: "Pouët.net", URL: "https://www.pouet.net/export/lastprodsadded.rss.php", Category: "computing", Lang: "en", Description: "The demoscene portal: latest cracks, demos, and technical feats on all platforms.", IsActive: true},
-	{ID: "xyphoe", Name: "Génération Micros", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCFji91gjx1g58cAMUnVs9qg", Category: "computing", Lang: "en", Description: "Especially for the Amstrad CPC, but cover other retro systems too with features, documentaries, longplays, reviews and more!", IsActive: true},
+	{ID: "xyphoe", Name: "Xyphoe", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCFji91gjx1g58cAMUnVs9qg", Category: "computing", Lang: "en", Description: "Especially for the Amstrad CPC, but cover other retro systems too with features, documentaries, longplays, reviews and more!", IsActive: true},
 
 	// -- FR
 	{ID: "vretrocomputing", Name: "Vretro Computing", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCG4S3PerB8tmodN-tpGQthA", Category: "computing", Lang: "fr", Description: "Utiliser de nos jours les ordinateurs populaires des années 80. Atari ST, Amiga... mais pas seulement. Modifications hardware et émulateurs. Développer pour ces machines avec les outils modernes.", IsActive: true},
