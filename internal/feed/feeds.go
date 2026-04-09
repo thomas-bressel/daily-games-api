@@ -5,7 +5,9 @@ import "github.com/tbressel/daily-games-api/pkg"
 // defaultFeeds is the list of all configured RSS feed sources.
 // These are static for now and will eventually be loaded from a database.
 var defaultFeeds = []pkg.Feed{
+	// -------------------------
 	// --- 🔥 NEXT-GEN & PRO ---
+	// -------------------------
 	// -- FR
 	{ID: "jeux-video", Name: "Jeux Video.com", URL: "https://www.jeuxvideo.com/rss/rss-news.xml", Category: "nextgen", Lang: "fr", Description: "Le leader de l'actualité vidéoludique en France : news, tests et vidéos.", IsActive: true},
 	{ID: "game-kult", Name: "Game Kult", URL: "https://www.gamekult.com/feed.xml", Category: "nextgen", Lang: "fr", Description: "Retrouvez toute l'actualité en temps réel et les tests des derniers jeux vidéo fraîchement sortis, servis par la rédaction Gamekult ! Découvrez toutes nos émissions, nos guides d'achat pour choisir le meilleur matériel ainsi que nos soluces et astuces pour profiter au maximum de vos jeux préférés.", IsActive: true},
@@ -20,8 +22,16 @@ var defaultFeeds = []pkg.Feed{
 	// -- EN
 	{ID: "vgc", Name: "VGC", URL: "https://www.videogameschronicle.com/feed/", Category: "nextgen", Lang: "en", Description: "Unbiased news, reporting and features from the global gaming industry.", IsActive: true},
 	{ID: "gameradar", Name: "GamesRadar+", URL: "https://www.gamesradar.com/feeds.xml", Category: "nextgen", Lang: "en", Description: "Breaking news, reviews and features from the world of gaming.", IsActive: true},
+	{ID: "mmorpg", Name: "MMORPG", URL: "https://www.mmorpg.com/rss", Category: "nextgen", Lang: "en", Description: "MMORPG.com reviews MMORPG games. We also provide the latest news and exclusive coverage of the MMO gaming genre.  Our free MMO games list and forums are the best site for gamers in search of a gaming community.", IsActive: true},
+	{ID: "eurogamer", Name: "Eurogamer", URL: "https://www.eurogamer.net/feed", Category: "nextgen", Lang: "en", Description: "The gold standard of European gaming journalism: deep dives and critical reviews.", IsActive: true},
+	{ID: "rock-paper-shotgun", Name: "Rock Paper Shotgun", URL: "https://www.rockpapershotgun.com/feed", Category: "nextgen", Lang: "en", Description: "The best site for PC gaming news with a very unique, witty British tone.", IsActive: true},
+	{ID: "gematsu", Name: "Gematsu", URL: "https://www.gematsu.com/feed", Category: "nextgen", Lang: "en", Description: "Fast and accurate news, especially for Japanese games and niche titles.", IsActive: true},
+	{ID: "polygon", Name: "Polygon", URL: "https://www.polygon.com/feed", Category: "nextgen", Lang: "en", Description: "Gaming culture, news, and long-form features.", IsActive: true},
+	{ID: "nintendo-life", Name: "Nintendo Life", URL: "https://www.nintendolife.com/feeds/latest", Category: "nextgen", Lang: "en", Description: "Comprehensive coverage of Nintendo's legacy systems and classic re-releases.", IsActive: true},
 
+	// ----------------------
 	// --- 🕹️ RETROGAMING ---
+	// ----------------------
 	// -- FR
 	{ID: "recalbox", Name: "Recalbox", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCfcqrtnHwB84YQlVN75PRfQ", Category: "retrogaming", Lang: "fr", Description: "Le portail de l'émulation francophone de référence pour les nostalgique.", IsActive: true},
 	{ID: "mo5", Name: "Association MO5", URL: "https://mag.mo5.com/feed/", Category: "retrogaming", Lang: "fr", Description: "L'actualité de la préservation du patrimoine numérique par l'association MO5.", IsActive: true},
@@ -34,33 +44,45 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "retrogamer", Name: "Retrogamer", URL: "https://retrogamer.cc/feed/", Category: "retrogaming", Lang: "fr", Description: "Site indépendant dédié au rétrogaming et à l'actualité tech. Pas de publicité, juste du contenu pour les passionnés", IsActive: true},
 	{ID: "jdg", Name: "Le Joueur du Grenier", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC_yP2DpIgs5Y1uWC0T03Chw", Category: "retrogaming", Lang: "fr", Description: "Test de jeux à la con !", IsActive: true},
 	// -- EN
-	// {ID: "vintageisthenewold", Name: "Vintage is the New Old", URL: "https://www.vintageisthenewold.com/feed/", Category: "retrogaming", Lang: "en", Description: "News about classic systems, computing history and homebrew releases.", IsActive: true},
 	{ID: "reddit-retro", Name: "Reddit Retrogaming", URL: "https://www.reddit.com/r/retrogaming/.rss", Category: "retrogaming", Lang: "en", Description: "The premier Reddit community for classic gaming enthusiasts.", IsActive: true},
 	{ID: "indie-retro-news", Name: "Indie Retro News", URL: "http://www.indieretronews.com/feeds/posts/default?alt=rss", Category: "retrogaming", Lang: "en", Description: "Focus on indie games and retro-styled modern titles across all platforms.", IsActive: true},
 	{ID: "time-extension", Name: "Time Extension", URL: "https://www.timeextension.com/feeds/latest", Category: "retrogaming", Lang: "en", Description: "Time Extension brings you the latest news and features from the world of retro gaming. Giving retro and classic games more time to shine and so much more.", IsActive: true},
+	{ID: "arcade-heroes", Name: "Arcade Heroes", URL: "https://arcadeheroes.com/feed/", Category: "retrogaming", Lang: "en", Description: "The leading source for arcade industry news, coin-op hardware and location-based entertainment.", IsActive: true},
+	{ID: "arcade-blogger", Name: "The Arcade Blogger", URL: "https://arcadeblogger.com/feed/", Category: "retrogaming", Lang: "en", Description: "Long-form articles about arcade history, restoration, and hidden treasures.", IsActive: true},
 
+	// ------------------------------
 	// --- 💎 INDIE & DÉCOUVERTES ---
+	// ------------------------------
 	// -- FR
 	{ID: "indiemag", Name: "IndieMag", URL: "https://www.indiemag.fr/feed/rss.xml", Category: "indie", Lang: "fr", Description: "Le portail francophone spécialisé dans l'actualité du jeu indépendant.", IsActive: true},
 	{ID: "at0mium", Name: "At0mium", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCI0LNmSlhS-H9mGNPWM8gzQ", Category: "indie", Lang: "fr", Description: "Chroniques et découvertes quotidiennes de pépites de la scène indépendante.", IsActive: true},
 	// -- EN
 	{ID: "indiedb", Name: "Indie DB", URL: "https://rss.indiedb.com/articles/feed/rss.xml", Category: "indie", Lang: "en", Description: "Comprehensive database and latest news about independent video games.", IsActive: true},
 	{ID: "itchio", Name: "Itch.io News", URL: "https://itch.io/feed/new.xml", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
+	{ID: "indie-games-plus", Name: "Indie Games Plus", URL: "https://indiegamesplus.com/feed", Category: "indie", Lang: "en", Description: "Daily coverage of the latest and greatest in the independent gaming scene.", IsActive: true},
+	{ID: "warp-door", Name: "Warp Door", URL: "https://warpdoor.com/rss", Category: "indie", Lang: "en", Description: "A curated look at small, experimental, and weird indie games.", IsActive: true},
+	// --- PROBLEM : Itchio is using a cloudflare server : impossible to acces to rss feeds
 	// {ID: "itchio", Name: "Itch.io News", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC64fwl47Wrc6VJcskll7vsA", Category: "indie", Lang: "en", Description: "Showcasing the best independent and experimental games on Itch.io.", IsActive: true},
 
+	// --------------------------
 	// --- 🛠️ HOMEBREW & TECH ---
+	// --------------------------
 	// -- EN
 	{ID: "wololo", Name: "Wololo.net", URL: "https://wololo.net/feed/", Category: "homebrew", Lang: "en", Description: "The home of the console homebrew, hacking and customization scene.", IsActive: true},
 	{ID: "retro-rgb", Name: "Retro RGB", URL: "https://www.retrorgb.com/feed", Category: "homebrew", Lang: "en", Description: "High-quality video output, hardware mods and technical guides for retro consoles.", IsActive: true},
 	{ID: "gbatemp", Name: "GBAtemp", URL: "https://gbatemp.net/feed/news", Category: "homebrew", Lang: "en", Description: "Independent gaming community focused on console hacking and homebrew.", IsActive: true},
 	{ID: "scene-world", Name: "Scene World", URL: "https://feeds.feedburner.com/sceneworldpodcast", Category: "homebrew", Lang: "en", Description: "The digital magazine and podcast covering the international computing scene.", IsActive: true},
+
 	// --FR
 
+	// -------------------
 	// --- 📦 MACHINES ---
+	// -------------------
 	// -- EN
 	{ID: "atarilegend", Name: "Atari Legend", URL: "https://www.atarilegend.com/feed", Category: "computing", Lang: "en", Description: "Information, reviews and comments about Atari ST games, interviews of famous Atari ST game developers, contribute missing information to the database.", IsActive: true},
-	// {ID: "atariage", Name: "Atariage", URL: "https://www.atariage.com/news/rss.php", Category: "computing", Lang: "en", Description: "The premier website for everything related to Atari systems and homebrew.", IsActive: true},
-	// {ID: "octoate", Name: "Octoate", URL: "https://www.octoate.de/feed/", Category: "computing", Lang: "en", Description: "The Amstrad CPC resource for news, articles and technical information.", IsActive: true},
+	{ID: "pouet-net", Name: "Pouët.net", URL: "https://www.pouet.net/export/lastprodsadded.rss.php", Category: "computing", Lang: "en", Description: "The demoscene portal: latest cracks, demos, and technical feats on all platforms.", IsActive: true},
+	{ID: "xyphoe", Name: "Génération Micros", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCFji91gjx1g58cAMUnVs9qg", Category: "computing", Lang: "en", Description: "Especially for the Amstrad CPC, but cover other retro systems too with features, documentaries, longplays, reviews and more!", IsActive: true},
+
 	// -- FR
 	{ID: "vretrocomputing", Name: "Vretro Computing", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCG4S3PerB8tmodN-tpGQthA", Category: "computing", Lang: "fr", Description: "Utiliser de nos jours les ordinateurs populaires des années 80. Atari ST, Amiga... mais pas seulement. Modifications hardware et émulateurs. Développer pour ces machines avec les outils modernes.", IsActive: true},
 	{ID: "amstrad-eu", Name: "Amstrad.eu", URL: "https://amstrad.eu/feed/", Category: "computing", Lang: "fr", Description: "Le portail communautaire francophone de référence pour l'Amstrad CPC.", IsActive: true},
@@ -68,10 +90,10 @@ var defaultFeeds = []pkg.Feed{
 	{ID: "asmtariste", Name: "ASMtariSTe", URL: "https://www.asmtariste.fr/feed", Category: "computing", Lang: "fr", Description: "Apprendre l'assembleur 68000 sur Atari ST/STe", IsActive: true},
 	{ID: "generation-micros", Name: "Génération Micros", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCn7r5PVBk3B8M5iphVHhnmw", Category: "computing", Lang: "fr", Description: "Bienvenue chez Génération Micros, la chaîne qui va vous faire retourner au siècle dernier, redécouvrir les pépites et leurs histoires, sur les nombreux ordinateurs 8 16 bits de l'époque.", IsActive: true},
 	{ID: "c64-universe", Name: "The Universe Of C64", URL: "https://c64universe.com/feed/", Category: "computing", Lang: "en", Description: "Games, stories, and modern tips", IsActive: true},
-	// {ID: "ucpm", Name: "ùCPM Blog", URL: "https://ucpmblog.ovh/index.php/feed/", Category: "computing", Lang: "fr", Description: "Blog dédié à l'actualité et au développement sur Amstrad CPC.", IsActive: true},
-	// {ID: "amstariga", Name: "Amstariga", URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UCZnozTrLo1y-4VSdTYfC5dQ", Category: "computing", Lang: "fr", Description: "Chaîne YouTube dédiée aux machines 8 bits et à l'Amstrad CPC.", IsActive: true},
 
+	// --------------
 	// --- ESPORT ---
+	// --------------
 	// -- FR
 	{ID: "e-sport-fr", Name: "E.Sport", URL: "https://e.sport.fr/feed", Category: "esport", Lang: "fr", Description: "L'actu du esport et du gaming !", IsActive: true},
 	// -- EN
